@@ -1,5 +1,25 @@
-body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; }
-.header { background:#0d47a1; color: white; padding: 12px; }
-.container { padding: 16px; }
-.movie { display:flex; gap:12px; margin-bottom:12px; }
-.poster { width:92px; }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background:#0d47a1;
+    color: white;
+    padding: 12px;
+}
+
+.container {
+    padding: 16px;
+}
+
+.movie {
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+}
+
+.poster {
+    width:92px;
+}
