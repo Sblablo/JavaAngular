@@ -29,6 +29,12 @@ export class TmdbService {
     return this.http.get(url, { headers: this.authHeaders(), params });
   }
 
+  movieCredits(id: number): Observable<any> {
+    const url = `${this.baseUrl}/movie/${id}/credits`;
+    const params = new HttpParams().set('api_key', this.apiKey);
+    return this.http.get(url, { headers: this.authHeaders(), params });
+  }
+
   searchMovies(query: string, page = 1, filters: any = {}): Observable<any> {
     const url = `${this.baseUrl}/search/movie`;
     let params = new HttpParams()

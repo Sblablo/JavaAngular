@@ -5,11 +5,11 @@ import { TmdbService } from './tmdb.service';
 @Component({
   selector: 'app-movie-list',
   template: `
-    <form (ngSubmit)="applyFilters()" class="filters-form">
+    <form class="filters-form">
       <div class="filters-grid">
         <label class="filter-group">
           <span>Tri</span>
-          <select [(ngModel)]="filters.sort_by" name="sortBy">
+          <select [(ngModel)]="filters.sort_by" name="sortBy" (ngModelChange)="applyFilters()">
             <option value="popularity.desc">Popularité ↓</option>
             <option value="popularity.asc">Popularité ↑</option>
             <option value="release_date.desc">Date de sortie ↓</option>
@@ -21,40 +21,39 @@ import { TmdbService } from './tmdb.service';
 
         <label class="filter-group">
           <span>Date de sortie min</span>
-          <input type="date" [(ngModel)]="filters['primary_release_date.gte']" name="releaseDateGte" />
+          <input type="date" [(ngModel)]="filters['primary_release_date.gte']" name="releaseDateGte" (ngModelChange)="applyFilters()" />
         </label>
 
         <label class="filter-group">
           <span>Date de sortie max</span>
-          <input type="date" [(ngModel)]="filters['primary_release_date.lte']" name="releaseDateLte" />
+          <input type="date" [(ngModel)]="filters['primary_release_date.lte']" name="releaseDateLte" (ngModelChange)="applyFilters()" />
         </label>
 
         <label class="filter-group">
           <span>Note min</span>
-          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.gte']" name="voteAverageGte" placeholder="0.0" />
+          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.gte']" name="voteAverageGte" placeholder="0.0" (ngModelChange)="applyFilters()" />
         </label>
 
         <label class="filter-group">
           <span>Note max</span>
-          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.lte']" name="voteAverageLte" placeholder="10.0" />
+          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.lte']" name="voteAverageLte" placeholder="10.0" (ngModelChange)="applyFilters()" />
         </label>
 
         <label class="filter-group">
           <span>Réalisateur</span>
-          <input [(ngModel)]="filters.with_people" name="withPeople" placeholder="Ex. Christopher Nolan" />
+          <input [(ngModel)]="filters.with_people" name="withPeople" placeholder="Ex. Christopher Nolan" (ngModelChange)="applyFilters()" />
         </label>
       </div>
 
       <div class="genre-list">
         <label *ngFor="let genre of genres" class="genre-chip">
-          <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id)" />
+          <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id); applyFilters()" />
           <span>{{ genre.name }}</span>
         </label>
       </div>
 
       <div class="filter-actions">
-        <button type="submit">Appliquer</button>
-        <button type="button" (click)="resetFilters()">Réinitialiser</button>
+        <button type="button" class="reset-button" (click)="resetFilters()">Réinitialiser</button>
       </div>
     </form>
 
@@ -166,16 +165,53 @@ export class MovieListComponent implements OnInit {
     const query = this.currentQuery;
     if (query) {
       this.hasSearched = true;
-      this.tmdb.searchMovies(query, 1, queryFilters).subscribe(res => {
-        this.movies = this.applySort(res.results || []);
+      this.tmdb.searchMovies(query, 1).subscribe(res => {
+        this.movies = this.applyFiltersAndSort(res.results || [], queryFilters);
       });
       return;
     }
 
     this.hasSearched = false;
     this.tmdb.discoverMovies(queryFilters).subscribe(res => {
-      this.movies = this.applySort(res.results || []);
+      this.movies = this.applyFiltersAndSort(res.results || [], queryFilters);
     });
+  }
+
+  private applyFiltersAndSort(results: any[], queryFilters: any) {
+    let filteredResults = results.slice();
+
+    if (this.selectedGenres.length > 0) {
+      filteredResults = filteredResults.filter((item: any) =>
+        item.genre_ids?.some((genreId: number) => this.selectedGenres.includes(genreId))
+      );
+    }
+
+    const minDate = (queryFilters['primary_release_date.gte'] || '').toString();
+    if (minDate) {
+      filteredResults = filteredResults.filter((item: any) => !item.release_date || item.release_date >= minDate);
+    }
+
+    const maxDate = (queryFilters['primary_release_date.lte'] || '').toString();
+    if (maxDate) {
+      filteredResults = filteredResults.filter((item: any) => !item.release_date || item.release_date <= maxDate);
+    }
+
+    const minVote = (queryFilters['vote_average.gte'] || '').toString();
+    if (minVote) {
+      filteredResults = filteredResults.filter((item: any) => Number(item.vote_average ?? 0) >= Number(minVote));
+    }
+
+    const maxVote = (queryFilters['vote_average.lte'] || '').toString();
+    if (maxVote) {
+      filteredResults = filteredResults.filter((item: any) => Number(item.vote_average ?? 0) <= Number(maxVote));
+    }
+
+    const directorId = (queryFilters.with_people || '').toString();
+    if (directorId) {
+      filteredResults = filteredResults.filter((item: any) => item.credit_ids || item.id);
+    }
+
+    return this.applySort(filteredResults);
   }
 
   private applySort(results: any[]) {
