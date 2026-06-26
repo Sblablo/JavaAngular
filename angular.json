@@ -28,5 +28,8 @@
       }
     }
   },
-  "defaultProject": "tmdb-angular-sample"
+  "defaultProject": "tmdb-angular-sample",
+  "cli": {
+    "analytics": "5f06d024-8eb3-4ecc-9794-a4b5d5ac2ca7"
+  }
 }
