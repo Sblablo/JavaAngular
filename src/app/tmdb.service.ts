@@ -29,9 +29,79 @@ export class TmdbService {
     return this.http.get(url, { headers: this.authHeaders(), params });
   }
 
-  searchMovies(query: string, page = 1): Observable<any> {
+  searchMovies(query: string, page = 1, filters: any = {}): Observable<any> {
     const url = `${this.baseUrl}/search/movie`;
-    const params = new HttpParams().set('query', query).set('page', String(page)).set('api_key', this.apiKey);
+    let params = new HttpParams()
+      .set('query', query)
+      .set('page', String(page))
+      .set('api_key', this.apiKey);
+
+    if (filters['with_genres']) {
+      params = params.set('with_genres', filters['with_genres']);
+    }
+
+    if (filters['primary_release_date.gte']) {
+      params = params.set('primary_release_date.gte', filters['primary_release_date.gte']);
+    }
+
+    if (filters['primary_release_date.lte']) {
+      params = params.set('primary_release_date.lte', filters['primary_release_date.lte']);
+    }
+
+    if (filters['vote_average.gte']) {
+      params = params.set('vote_average.gte', filters['vote_average.gte']);
+    }
+
+    if (filters['vote_average.lte']) {
+      params = params.set('vote_average.lte', filters['vote_average.lte']);
+    }
+
+    if (filters.with_people) {
+      params = params.set('with_people', filters.with_people);
+    }
+
+    return this.http.get(url, { headers: this.authHeaders(), params });
+  }
+
+  searchPeople(query: string, page = 1): Observable<any> {
+    const url = `${this.baseUrl}/search/person`;
+    const params = new HttpParams()
+      .set('query', query)
+      .set('page', String(page))
+      .set('api_key', this.apiKey);
+    return this.http.get(url, { headers: this.authHeaders(), params });
+  }
+
+  discoverMovies(filters: any = {}, page = 1): Observable<any> {
+    const url = `${this.baseUrl}/discover/movie`;
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('api_key', this.apiKey);
+
+    if (filters['with_genres']) {
+      params = params.set('with_genres', filters['with_genres']);
+    }
+
+    if (filters['primary_release_date.gte']) {
+      params = params.set('primary_release_date.gte', filters['primary_release_date.gte']);
+    }
+
+    if (filters['primary_release_date.lte']) {
+      params = params.set('primary_release_date.lte', filters['primary_release_date.lte']);
+    }
+
+    if (filters['vote_average.gte']) {
+      params = params.set('vote_average.gte', filters['vote_average.gte']);
+    }
+
+    if (filters['vote_average.lte']) {
+      params = params.set('vote_average.lte', filters['vote_average.lte']);
+    }
+
+    if (filters.with_people) {
+      params = params.set('with_people', filters.with_people);
+    }
+
     return this.http.get(url, { headers: this.authHeaders(), params });
   }
 }

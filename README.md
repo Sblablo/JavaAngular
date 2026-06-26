@@ -9,8 +9,8 @@ npx ng serve --open
 ```
 
 Auteurs :
-Nathan Chan-Lock
-Célina Chau
-Dharni Prabakaran
-Ecaterina Rotar
+Nathan Chan-Lock,
+Célina Chau,
+Dharni Prabakaran,
+Ecaterina Rotar,
 Félix Despretz

@@ -1,2 +1,6 @@
 node_modules
 .angular
+dist
+tmp
+out-tsc
+bazel-out
