@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
     </div>
   `
 })
+
 export class AppComponent {
   onSearch(query: string) {
     // navigation handled inside SearchComponent for simplicity

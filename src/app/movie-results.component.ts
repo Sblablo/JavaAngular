@@ -14,18 +14,18 @@ import { TmdbService } from './tmdb.service';
           <div class="movie-info">
             <a [routerLink]="['/movie', m.id]" class="movie-title">{{m.title}}</a>
             <div class="movie-metadata">
-              <p *ngIf="getYear(m.release_date)"><strong>Année:</strong> {{getYear(m.release_date)}}</p>
-              <p *ngIf="movieDurations[m.id]"><strong>Durée:</strong> {{movieDurations[m.id]}} min</p>
+              <p *ngIf="getYear(m.release_date)"><strong>Year:</strong> {{getYear(m.release_date)}}</p>
+              <p *ngIf="movieDurations[m.id]"><strong>Duration:</strong> {{movieDurations[m.id]}} min</p>
               <p *ngIf="movieGenres[m.id]"><strong>Genre:</strong> {{movieGenres[m.id]}}</p>
-              <p *ngIf="m.original_language"><strong>Langue:</strong> {{m.original_language}}</p>
-              <p *ngIf="m.vote_average"><strong>Note:</strong> {{roundToTenth(m.vote_average)}}/10</p>
+              <p *ngIf="m.original_language"><strong>Language:</strong> {{m.original_language}}</p>
+              <p *ngIf="m.vote_average"><strong>Vote:</strong> {{roundToTenth(m.vote_average)}}/10</p>
             </div>
             <p class="movie-overview">{{m.overview}}</p>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="movies === null">Chargement...</div>
+    <div *ngIf="movies === null">Loading...</div>
   `
 })
 export class MovieResultsComponent implements OnInit, OnChanges {

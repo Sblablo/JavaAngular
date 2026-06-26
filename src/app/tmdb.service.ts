@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/*interface MovieCredits {
+  crew: {
+    job: string;
+    name: string;
+  }[];
+}*/
+
 @Injectable()
 export class TmdbService {
   private readonly apiKey = '5d2572ebb9ed67c316d3a3e5601e5e15';

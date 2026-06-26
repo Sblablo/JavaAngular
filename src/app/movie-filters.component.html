@@ -1,39 +1,39 @@
 <form class="filters-form">
   <div class="filters-grid">
     <label class="filter-group">
-      <span>Tri</span>
+      <span>Filter</span>
       <select [(ngModel)]="filters.sort_by" name="sortBy" (ngModelChange)="onFiltersChange()">
-        <option value="popularity.desc">Popularité ↓</option>
-        <option value="popularity.asc">Popularité ↑</option>
-        <option value="release_date.desc">Date de sortie ↓</option>
-        <option value="release_date.asc">Date de sortie ↑</option>
-        <option value="vote_average.desc">Note ↓</option>
-        <option value="vote_average.asc">Note ↑</option>
+        <option value="popularity.desc">Popularity ↓</option>
+        <option value="popularity.asc">Popularity ↑</option>
+        <option value="release_date.desc">Release Date ↓</option>
+        <option value="release_date.asc">Release Date ↑</option>
+        <option value="vote_average.desc">Vote ↓</option>
+        <option value="vote_average.asc">Vote ↑</option>
       </select>
     </label>
 
     <label class="filter-group">
-      <span>Date de sortie min</span>
+      <span>Relase Date Min</span>
       <input type="date" [(ngModel)]="filters['primary_release_date.gte']" name="releaseDateGte" (ngModelChange)="onFiltersChange()" />
     </label>
 
     <label class="filter-group">
-      <span>Date de sortie max</span>
+      <span>Release Date Max</span>
       <input type="date" [(ngModel)]="filters['primary_release_date.lte']" name="releaseDateLte" (ngModelChange)="onFiltersChange()" />
     </label>
 
     <label class="filter-group">
-      <span>Note min</span>
+      <span>Vote Min</span>
       <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.gte']" name="voteAverageGte" placeholder="0.0" (ngModelChange)="onFiltersChange()" />
     </label>
 
     <label class="filter-group">
-      <span>Note max</span>
+      <span>Vote Max</span>
       <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.lte']" name="voteAverageLte" placeholder="10.0" (ngModelChange)="onFiltersChange()" />
     </label>
 
     <label class="filter-group">
-      <span>Réalisateur</span>
+      <span>Filmmaker</span>
       <input [(ngModel)]="filters.with_people" name="withPeople" placeholder="Ex. Christopher Nolan" (ngModelChange)="onFiltersChange()" />
     </label>
   </div>
@@ -46,6 +46,6 @@
   </div>
 
   <div class="filter-actions">
-    <button type="button" class="reset-button" (click)="reset()">Réinitialiser</button>
+    <button type="button" class="reset-button" (click)="reset()">Reset</button>
   </div>
 </form>

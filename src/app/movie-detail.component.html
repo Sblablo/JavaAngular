@@ -4,14 +4,14 @@
     <div class="detail-info">
       <h2>{{movie.title}}</h2>
       <div class="info-grid">
-        <p *ngIf="getYear(movie.release_date)"><strong>Année:</strong> {{getYear(movie.release_date)}}</p>
-        <p *ngIf="movie.runtime"><strong>Durée:</strong> {{movie.runtime}} min</p>
+        <p *ngIf="getYear(movie.release_date)"><strong>Year:</strong> {{getYear(movie.release_date)}}</p>
+        <p *ngIf="movie.runtime"><strong>Duration:</strong> {{movie.runtime}} min</p>
         <p *ngIf="getGenres(movie.genres)"><strong>Genre:</strong> {{getGenres(movie.genres)}}</p>
-        <p *ngIf="movie.original_language"><strong>Langue:</strong> {{movie.original_language}}</p>
-        <p *ngIf="movie.vote_average"><strong>Note:</strong> {{movie.vote_average}}/10</p>
-        <p *ngIf="movie.status"><strong>Statut:</strong> {{movie.status}}</p>
+        <p *ngIf="movie.original_language"><strong>Language:</strong> {{movie.original_language}}</p>
+        <p *ngIf="movie.vote_average"><strong>Vote:</strong> {{movie.vote_average}}/10</p>
+        <p *ngIf="movie.status"><strong>Status:</strong> {{movie.status}}</p>
         <p *ngIf="movie.budget"><strong>Budget:</strong> <span *ngIf="movie.budget">${{formatNumber(movie.budget)}}</span><span *ngIf="!movie.budget">N/A</span></p>
-        <p *ngIf="movie.revenue"><strong>Revenu:</strong> <span *ngIf="movie.revenue">${{formatNumber(movie.revenue)}}</span><span *ngIf="!movie.revenue">N/A</span></p>
+        <p *ngIf="movie.revenue"><strong>Revenue:</strong> <span *ngIf="movie.revenue">${{formatNumber(movie.revenue)}}</span><span *ngIf="!movie.revenue">N/A</span></p>
         <p *ngIf="movie.tagline"><strong>Tagline:</strong> {{movie.tagline}}</p>
       </div>
     </div>
@@ -21,4 +21,4 @@
     <p>{{movie.overview}}</p>
   </div>
 </div>
-<div *ngIf="!movie">Chargement...</div>
+<div *ngIf="!movie">Loading...</div>

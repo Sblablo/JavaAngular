@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
   selector: 'app-search',
   template: `
     <form (submit)="doSearch($event)" class="search-form">
-      <input [(ngModel)]="q" name="q" placeholder="Rechercher un nom de film" />
-      <button type="submit">Recherche</button>
+      <input [(ngModel)]="q" name="q" placeholder="Search for a movie" />
+      <button type="submit">Search</button>
     </form>
   `
 })

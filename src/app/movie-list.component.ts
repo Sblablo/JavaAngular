@@ -34,23 +34,23 @@ export class MovieListComponent implements OnInit {
   currentQuery = '';
   genres = [
     { id: 28, name: 'Action' },
-    { id: 12, name: 'Aventure' },
+    { id: 12, name: 'Adventure' },
     { id: 16, name: 'Animation' },
-    { id: 35, name: 'Comédie' },
+    { id: 35, name: 'Comedy' },
     { id: 80, name: 'Crime' },
-    { id: 99, name: 'Documentaire' },
-    { id: 18, name: 'Drame' },
+    { id: 99, name: 'Documentary' },
+    { id: 18, name: 'Drama' },
     { id: 10751, name: 'Familial' },
-    { id: 14, name: 'Fantastique' },
-    { id: 36, name: 'Histoire' },
-    { id: 27, name: 'Horreur' },
-    { id: 10402, name: 'Musique' },
-    { id: 9648, name: 'Mystère' },
+    { id: 14, name: 'Fantasy' },
+    { id: 36, name: 'History' },
+    { id: 27, name: 'Horror' },
+    { id: 10402, name: 'Music' },
+    { id: 9648, name: 'Mystery' },
     { id: 10749, name: 'Romance' },
     { id: 878, name: 'Science-fiction' },
-    { id: 10770, name: 'Téléfilm' },
+    { id: 10770, name: 'Television film' },
     { id: 53, name: 'Thriller' },
-    { id: 10752, name: 'Guerre' },
+    { id: 10752, name: 'War' },
     { id: 37, name: 'Western' }
   ];
 
@@ -120,7 +120,7 @@ export class MovieListComponent implements OnInit {
     if (query) {
       this.hasSearched = true;
       this.tmdb.searchMovies(query, 1).subscribe(res => {
-        const results = res.results || [];
+        const results: { id: number }[] = res.results ?? [];
         const directorName = (this.filters.with_people || '').trim();
 
         if (directorName) {
