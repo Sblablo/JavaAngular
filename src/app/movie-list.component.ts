@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { TmdbService } from './tmdb.service';
 
 // Composant de logique transmettant les filtres et résultats
@@ -119,7 +120,24 @@ export class MovieListComponent implements OnInit {
     if (query) {
       this.hasSearched = true;
       this.tmdb.searchMovies(query, 1).subscribe(res => {
-        this.movies = this.applyFiltersAndSort(res.results || [], queryFilters);
+        const results = res.results || [];
+        const directorName = (this.filters.with_people || '').trim();
+
+        if (directorName) {
+          const creditRequests = results.map((movie: any) => this.tmdb.movieCredits(movie.id));
+          forkJoin(creditRequests).subscribe(creditResponses => {
+            const filteredResults = results.filter((movie: any, index: number) => {
+              const crew = creditResponses[index]?.crew || [];
+              return crew.some((person: any) =>
+                person.job === 'Director' && person.name?.toLowerCase() === directorName.toLowerCase()
+              );
+            });
+            this.movies = this.applyFiltersAndSort(filteredResults, queryFilters);
+          });
+          return;
+        }
+
+        this.movies = this.applyFiltersAndSort(results, queryFilters);
       });
       return;
     }
@@ -158,11 +176,6 @@ export class MovieListComponent implements OnInit {
     const maxVote = (queryFilters['vote_average.lte'] || '').toString();
     if (maxVote) {
       filteredResults = filteredResults.filter((item: any) => Number(item.vote_average ?? 0) <= Number(maxVote));
-    }
-
-    const directorId = (queryFilters.with_people || '').toString();
-    if (directorId) {
-      filteredResults = filteredResults.filter((item: any) => item.credit_ids || item.id);
     }
 
     return this.applySort(filteredResults);
