@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from './tmdb.service';
 
+// Composant de détail d'un film
 @Component({
   selector: 'app-movie-detail',
   template: `

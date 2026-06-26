@@ -1,0 +1,51 @@
+<form class="filters-form">
+  <div class="filters-grid">
+    <label class="filter-group">
+      <span>Tri</span>
+      <select [(ngModel)]="filters.sort_by" name="sortBy" (ngModelChange)="onFiltersChange()">
+        <option value="popularity.desc">Popularité ↓</option>
+        <option value="popularity.asc">Popularité ↑</option>
+        <option value="release_date.desc">Date de sortie ↓</option>
+        <option value="release_date.asc">Date de sortie ↑</option>
+        <option value="vote_average.desc">Note ↓</option>
+        <option value="vote_average.asc">Note ↑</option>
+      </select>
+    </label>
+
+    <label class="filter-group">
+      <span>Date de sortie min</span>
+      <input type="date" [(ngModel)]="filters['primary_release_date.gte']" name="releaseDateGte" (ngModelChange)="onFiltersChange()" />
+    </label>
+
+    <label class="filter-group">
+      <span>Date de sortie max</span>
+      <input type="date" [(ngModel)]="filters['primary_release_date.lte']" name="releaseDateLte" (ngModelChange)="onFiltersChange()" />
+    </label>
+
+    <label class="filter-group">
+      <span>Note min</span>
+      <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.gte']" name="voteAverageGte" placeholder="0.0" (ngModelChange)="onFiltersChange()" />
+    </label>
+
+    <label class="filter-group">
+      <span>Note max</span>
+      <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.lte']" name="voteAverageLte" placeholder="10.0" (ngModelChange)="onFiltersChange()" />
+    </label>
+
+    <label class="filter-group">
+      <span>Réalisateur</span>
+      <input [(ngModel)]="filters.with_people" name="withPeople" placeholder="Ex. Christopher Nolan" (ngModelChange)="onFiltersChange()" />
+    </label>
+  </div>
+
+  <div class="genre-list">
+    <label *ngFor="let genre of genres" class="genre-chip">
+      <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id)" />
+      <span>{{ genre.name }}</span>
+    </label>
+  </div>
+
+  <div class="filter-actions">
+    <button type="button" class="reset-button" (click)="reset()">Réinitialiser</button>
+  </div>
+</form>

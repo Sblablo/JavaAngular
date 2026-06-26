@@ -1,75 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from './tmdb.service';
 
+// Composant de logique transmettant les filtres et résultats
 @Component({
   selector: 'app-movie-list',
   template: `
-    <form class="filters-form">
-      <div class="filters-grid">
-        <label class="filter-group">
-          <span>Tri</span>
-          <select [(ngModel)]="filters.sort_by" name="sortBy" (ngModelChange)="applyFilters()">
-            <option value="popularity.desc">Popularité ↓</option>
-            <option value="popularity.asc">Popularité ↑</option>
-            <option value="release_date.desc">Date de sortie ↓</option>
-            <option value="release_date.asc">Date de sortie ↑</option>
-            <option value="vote_average.desc">Note ↓</option>
-            <option value="vote_average.asc">Note ↑</option>
-          </select>
-        </label>
+    <app-movie-filters
+      [filters]="filters"
+      [genres]="genres"
+      [selectedGenres]="selectedGenres"
+      (filtersChange)="onFiltersChange($event)"
+      (selectedGenresChange)="onSelectedGenresChange($event)"
+      (resetFilters)="resetFilters()"
+    ></app-movie-filters>
 
-        <label class="filter-group">
-          <span>Date de sortie min</span>
-          <input type="date" [(ngModel)]="filters['primary_release_date.gte']" name="releaseDateGte" (ngModelChange)="applyFilters()" />
-        </label>
-
-        <label class="filter-group">
-          <span>Date de sortie max</span>
-          <input type="date" [(ngModel)]="filters['primary_release_date.lte']" name="releaseDateLte" (ngModelChange)="applyFilters()" />
-        </label>
-
-        <label class="filter-group">
-          <span>Note min</span>
-          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.gte']" name="voteAverageGte" placeholder="0.0" (ngModelChange)="applyFilters()" />
-        </label>
-
-        <label class="filter-group">
-          <span>Note max</span>
-          <input type="number" min="0" max="10" step="0.1" [(ngModel)]="filters['vote_average.lte']" name="voteAverageLte" placeholder="10.0" (ngModelChange)="applyFilters()" />
-        </label>
-
-        <label class="filter-group">
-          <span>Réalisateur</span>
-          <input [(ngModel)]="filters.with_people" name="withPeople" placeholder="Ex. Christopher Nolan" (ngModelChange)="applyFilters()" />
-        </label>
-      </div>
-
-      <div class="genre-list">
-        <label *ngFor="let genre of genres" class="genre-chip">
-          <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id); applyFilters()" />
-          <span>{{ genre.name }}</span>
-        </label>
-      </div>
-
-      <div class="filter-actions">
-        <button type="button" class="reset-button" (click)="resetFilters()">Réinitialiser</button>
-      </div>
-    </form>
-
-    <div *ngIf="movies !== null">
-      <div *ngIf="movies.length === 0" class="empty-state">Aucun résultat</div>
-      <div *ngIf="movies.length > 0">
-        <div *ngFor="let m of movies" class="movie">
-          <img *ngIf="m.poster_path" class="poster" [src]="imageUrl(m.poster_path)" />
-          <div>
-            <a [routerLink]="['/movie', m.id]">{{m.title}}</a>
-            <p>{{m.overview}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="movies === null">Chargement...</div>
+    <app-movie-results [movies]="movies"></app-movie-results>
   `
 })
 export class MovieListComponent implements OnInit {
@@ -107,7 +53,7 @@ export class MovieListComponent implements OnInit {
     { id: 37, name: 'Western' }
   ];
 
-  constructor(private tmdb: TmdbService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private tmdb: TmdbService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
@@ -116,10 +62,24 @@ export class MovieListComponent implements OnInit {
     });
   }
 
+  // Applique les filtre, et appel la recharge de la liste de films
+  onFiltersChange(nextFilters: any) {
+    this.filters = nextFilters;
+    this.applyFilters();
+  }
+
+  // Applique les genres sélectionnés et recharge la liste de films
+  onSelectedGenresChange(nextGenres: number[]) {
+    this.selectedGenres = nextGenres;
+    this.applyFilters();
+  }
+
+  // Recharge la liste des films avec les filtres sélectionnés
   applyFilters() {
     this.loadMovies();
   }
 
+  // Remet les filtres à 0
   resetFilters() {
     this.filters = {
       sort_by: 'popularity.desc',
@@ -133,15 +93,7 @@ export class MovieListComponent implements OnInit {
     this.loadMovies();
   }
 
-  toggleGenre(genreId: number) {
-    const index = this.selectedGenres.indexOf(genreId);
-    if (index >= 0) {
-      this.selectedGenres.splice(index, 1);
-    } else {
-      this.selectedGenres.push(genreId);
-    }
-  }
-
+  // Recharge la liste des films
   private loadMovies() {
     const queryFilters: any = { ...this.filters };
     if (this.selectedGenres.length > 0) {
@@ -161,6 +113,7 @@ export class MovieListComponent implements OnInit {
     this.executeLoad(queryFilters);
   }
 
+  // Exécute la recherche de films
   private executeLoad(queryFilters: any) {
     const query = this.currentQuery;
     if (query) {
@@ -177,6 +130,7 @@ export class MovieListComponent implements OnInit {
     });
   }
 
+  // Applique les filtres et le tri sur les résultats de films
   private applyFiltersAndSort(results: any[], queryFilters: any) {
     let filteredResults = results.slice();
 
@@ -214,6 +168,7 @@ export class MovieListComponent implements OnInit {
     return this.applySort(filteredResults);
   }
 
+  // Applique le tri sur les résultats de films
   private applySort(results: any[]) {
     const sortBy = this.filters.sort_by || 'popularity.desc';
     const [field, direction] = sortBy.split('.');
@@ -238,9 +193,5 @@ export class MovieListComponent implements OnInit {
       return new Date(value).getTime();
     }
     return Number(item[field] ?? 0);
-  }
-
-  imageUrl(path: string) {
-    return `https://image.tmdb.org/t/p/w200${path}`;
   }
 }
