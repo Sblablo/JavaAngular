@@ -1,0 +1,24 @@
+<div *ngIf="movie" class="movie-detail">
+  <div class="detail-container">
+    <img *ngIf="movie.poster_path" class="detail-poster" [src]="imageUrl(movie.poster_path)" />
+    <div class="detail-info">
+      <h2>{{movie.title}}</h2>
+      <div class="info-grid">
+        <p *ngIf="getYear(movie.release_date)"><strong>Année:</strong> {{getYear(movie.release_date)}}</p>
+        <p *ngIf="movie.runtime"><strong>Durée:</strong> {{movie.runtime}} min</p>
+        <p *ngIf="getGenres(movie.genres)"><strong>Genre:</strong> {{getGenres(movie.genres)}}</p>
+        <p *ngIf="movie.original_language"><strong>Langue:</strong> {{movie.original_language}}</p>
+        <p *ngIf="movie.vote_average"><strong>Note:</strong> {{movie.vote_average}}/10</p>
+        <p *ngIf="movie.status"><strong>Statut:</strong> {{movie.status}}</p>
+        <p *ngIf="movie.budget"><strong>Budget:</strong> <span *ngIf="movie.budget">${{formatNumber(movie.budget)}}</span><span *ngIf="!movie.budget">N/A</span></p>
+        <p *ngIf="movie.revenue"><strong>Revenu:</strong> <span *ngIf="movie.revenue">${{formatNumber(movie.revenue)}}</span><span *ngIf="!movie.revenue">N/A</span></p>
+        <p *ngIf="movie.tagline"><strong>Tagline:</strong> {{movie.tagline}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="synopsis-section">
+    <h3>Synopsis</h3>
+    <p>{{movie.overview}}</p>
+  </div>
+</div>
+<div *ngIf="!movie">Chargement...</div>
