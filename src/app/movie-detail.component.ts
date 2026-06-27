@@ -7,31 +7,55 @@ import { TmdbService } from './tmdb.service';
 @Component({
   selector: 'app-movie-detail',
   template: `
-    <div *ngIf="movie" class="movie-detail">
-      <div class="detail-container">
-        <img *ngIf="movie.poster_path" class="detail-poster" [src]="imageUrl(movie.poster_path)" />
-        <div class="detail-info">
-          <h2>{{movie.title}}</h2>
-          <div class="info-grid">
-            <p *ngIf="getYear(movie.release_date)"><strong>Year:</strong> {{getYear(movie.release_date)}}</p>
-            <p *ngIf="movie.runtime"><strong>Duration:</strong> {{movie.runtime}} min</p>
-            <p *ngIf="getGenres(movie.genres)"><strong>Genre:</strong> {{getGenres(movie.genres)}}</p>
-            <p *ngIf="movie.original_language"><strong>Language:</strong> {{movie.original_language}}</p>
-            <p *ngIf="movie.vote_average"><strong>Vote:</strong> {{roundToTenth(movie.vote_average)}}/10</p>
-            <p *ngIf="movie.status"><strong>Status:</strong> {{movie.status}}</p>
-            <p *ngIf="movie.budget"><strong>Budget:</strong> {{movie.budget ? formatCurrency(movie.budget) : 'N/A'}}</p>
-            <p *ngIf="movie.revenue"><strong>Revenue:</strong> {{movie.revenue ? formatCurrency(movie.revenue) : 'N/A'}}</p>
-            <p *ngIf="movie.tagline"><strong>Tagline:</strong> {{movie.tagline}}</p>
+    @if (movie) {
+      <div class="movie-detail">
+        <div class="detail-container">
+          @if (movie.poster_path) {
+            <img class="detail-poster" [src]="imageUrl(movie.poster_path)" />
+          }
+          <div class="detail-info">
+            <h2>{{movie.title}}</h2>
+            <div class="info-grid">
+              @if (getYear(movie.release_date)) {
+                <p><strong>Year:</strong> {{getYear(movie.release_date)}}</p>
+              }
+              @if (movie.runtime) {
+                <p><strong>Duration:</strong> {{movie.runtime}} min</p>
+              }
+              @if (getGenres(movie.genres)) {
+                <p><strong>Genre:</strong> {{getGenres(movie.genres)}}</p>
+              }
+              @if (movie.original_language) {
+                <p><strong>Language:</strong> {{movie.original_language}}</p>
+              }
+              @if (movie.vote_average) {
+                <p><strong>Vote:</strong> {{roundToTenth(movie.vote_average)}}/10</p>
+              }
+              @if (movie.status) {
+                <p><strong>Status:</strong> {{movie.status}}</p>
+              }
+              @if (movie.budget) {
+                <p><strong>Budget:</strong> {{movie.budget ? formatCurrency(movie.budget) : 'N/A'}}</p>
+              }
+              @if (movie.revenue) {
+                <p><strong>Revenue:</strong> {{movie.revenue ? formatCurrency(movie.revenue) : 'N/A'}}</p>
+              }
+              @if (movie.tagline) {
+                <p><strong>Tagline:</strong> {{movie.tagline}}</p>
+              }
+            </div>
           </div>
         </div>
+        <div class="synopsis-section">
+          <h3>Synopsis</h3>
+          <p>{{movie.overview}}</p>
+        </div>
       </div>
-      <div class="synopsis-section">
-        <h3>Synopsis</h3>
-        <p>{{movie.overview}}</p>
-      </div>
-    </div>
-    <div *ngIf="!movie">Loading...</div>
-  `,
+    }
+    @if (!movie) {
+      <div>Loading...</div>
+    }
+    `,
   styles: [`
     .movie-detail {
         background: white;

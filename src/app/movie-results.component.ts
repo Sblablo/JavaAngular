@@ -6,27 +6,49 @@ import { TmdbService } from './tmdb.service';
 @Component({
   selector: 'app-movie-results',
   template: `
-    <div *ngIf="movies !== null">
-      <div *ngIf="movies.length === 0" class="empty-state">Aucun résultat</div>
-      <div *ngIf="movies.length > 0">
-        <div *ngFor="let m of movies" class="movie">
-          <img *ngIf="m.poster_path" class="poster" [src]="imageUrl(m.poster_path)" />
-          <div class="movie-info">
-            <a [routerLink]="['/movie', m.id]" class="movie-title">{{m.title}}</a>
-            <div class="movie-metadata">
-              <p *ngIf="getYear(m.release_date)"><strong>Year:</strong> {{getYear(m.release_date)}}</p>
-              <p *ngIf="movieDurations[m.id]"><strong>Duration:</strong> {{movieDurations[m.id]}} min</p>
-              <p *ngIf="movieGenres[m.id]"><strong>Genre:</strong> {{movieGenres[m.id]}}</p>
-              <p *ngIf="m.original_language"><strong>Language:</strong> {{m.original_language}}</p>
-              <p *ngIf="m.vote_average"><strong>Vote:</strong> {{roundToTenth(m.vote_average)}}/10</p>
-            </div>
-            <p class="movie-overview">{{m.overview}}</p>
+    @if (movies !== null) {
+      <div>
+        @if (movies.length === 0) {
+          <div class="empty-state">Aucun résultat</div>
+        }
+        @if (movies.length > 0) {
+          <div>
+            @for (m of movies; track m) {
+              <div class="movie">
+                @if (m.poster_path) {
+                  <img class="poster" [src]="imageUrl(m.poster_path)" />
+                }
+                <div class="movie-info">
+                  <a [routerLink]="['/movie', m.id]" class="movie-title">{{m.title}}</a>
+                  <div class="movie-metadata">
+                    @if (getYear(m.release_date)) {
+                      <p><strong>Year:</strong> {{getYear(m.release_date)}}</p>
+                    }
+                    @if (movieDurations[m.id]) {
+                      <p><strong>Duration:</strong> {{movieDurations[m.id]}} min</p>
+                    }
+                    @if (movieGenres[m.id]) {
+                      <p><strong>Genre:</strong> {{movieGenres[m.id]}}</p>
+                    }
+                    @if (m.original_language) {
+                      <p><strong>Language:</strong> {{m.original_language}}</p>
+                    }
+                    @if (m.vote_average) {
+                      <p><strong>Vote:</strong> {{roundToTenth(m.vote_average)}}/10</p>
+                    }
+                  </div>
+                  <p class="movie-overview">{{m.overview}}</p>
+                </div>
+              </div>
+            }
           </div>
-        </div>
+        }
       </div>
-    </div>
-    <div *ngIf="movies === null">Loading...</div>
-  `
+    }
+    @if (movies === null) {
+      <div>Loading...</div>
+    }
+    `
 })
 export class MovieResultsComponent implements OnInit, OnChanges {
   @Input() movies: any[] | null = null;

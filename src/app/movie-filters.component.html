@@ -39,10 +39,12 @@
   </div>
 
   <div class="genre-list">
-    <label *ngFor="let genre of genres" class="genre-chip">
-      <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id)" />
-      <span>{{ genre.name }}</span>
-    </label>
+    @for (genre of genres; track genre) {
+      <label class="genre-chip">
+        <input type="checkbox" [checked]="selectedGenres.includes(genre.id)" (change)="toggleGenre(genre.id)" />
+        <span>{{ genre.name }}</span>
+      </label>
+    }
   </div>
 
   <div class="filter-actions">
