@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { TmdbService } from './tmdb.service';
 
-// Composant de logique transmettant les filtres et résultats
+// Application home page
+// this component automatically loads the currently popular movies on init and presents them as a list
+// This avoids showing a blank page when the user arrives without searching
 @Component({
   selector: 'app-movie-list',
   template: `

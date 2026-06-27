@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 
-// Composant racine de l'application
+// AppComponent : Root componant that acts as the main shell of the application
+// It holds the global layout: the header, the search bar (SearchComponent), 
+// and the <router-outlet> which renders the correct component based on the current URL
+
 @Component({
   selector: 'app-root',
   template: `

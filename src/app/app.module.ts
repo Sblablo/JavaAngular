@@ -12,10 +12,18 @@ import { MovieFiltersComponent } from './movie-filters.component';
 import { MovieResultsComponent } from './movie-results.component';
 import { TmdbService } from './tmdb.service';
 
+
+// Application routes :
+// '/' : popular movies list (home page)
+// '/movie/:id' : detailed movie page, with the movie id as a URL parameter
+
 const routes: Routes = [
   { path: '', component: MovieListComponent },
   { path: 'movie/:id', component: MovieDetailComponent }
 ];
+
+// AppModule : root module of the Angular app
+// It's where all components are declared and external modules are imported
 
 @NgModule({
   declarations: [

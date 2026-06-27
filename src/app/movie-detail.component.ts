@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from './tmdb.service';
 
-// Composant de détail d'un film
+// Full movie detail page
+
 @Component({
   selector: 'app-movie-detail',
   template: `
@@ -103,26 +104,29 @@ import { TmdbService } from './tmdb.service';
   `]
 })
 export class MovieDetailComponent implements OnInit {
-  movie: any | null = null;
+  movie: any | null = null; // Full movie data once the API response is received
   constructor(private route: ActivatedRoute, private tmdb: TmdbService) {}
 
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+  ngOnInit() { // The movie ID is extracted from the URL and used to fetch the movie details
+    const id = Number(this.route.snapshot.paramMap.get('id')); // snapshot because the ID won't change while we're on this page
     if (id) {
       this.tmdb.movieDetails(id).subscribe(res => this.movie = res);
     }
   }
 
+  // Extracts the release year from a date string and return null if the date is missing
   getYear(releaseDate: string): number | null {
     if (!releaseDate) return null;
     return new Date(releaseDate).getFullYear();
   }
 
+  // Joins the genres into a comma separated string
   getGenres(genres: any[]): string {
     if (!genres) return '';
     return genres.map((g: any) => g.name).join(', ');
   }
 
+  // Formats a number as a dollar amount with French locale thousands separators
   formatCurrency(num: number): string {
     if (!num) return '0';
     return '$' + num.toLocaleString('fr-FR');
@@ -132,5 +136,7 @@ export class MovieDetailComponent implements OnInit {
     return Math.round(num * 10) / 10;
   }
 
+  // Builds the full poster URL using size w300, larger than the list thumbnails
+  // for a better render on the detail page
   imageUrl(path: string) { return `https://image.tmdb.org/t/p/w300${path}`; }
 }

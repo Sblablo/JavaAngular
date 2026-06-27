@@ -9,27 +9,32 @@ import { Observable } from 'rxjs';
   }[];
 }*/
 
+// handles all HTTP communication with The Movie Database TMDB API
+
 @Injectable()
 export class TmdbService {
-  private readonly apiKey = '5d2572ebb9ed67c316d3a3e5601e5e15';
-  private readonly readAccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZDI1NzJlYmI5ZWQ2N2MzMTZkM2EzZTU2MDFlNWUxNSIsIm5iZiI6MTc4MjMxOTEzMS4zNjgsInN1YiI6IjZhM2MwODFiMGNhYzMyZmVmZjY2YjEwYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m7J9FUIDtiVrszVvcWkpZd47qxi5_-kvjc69Kd7SzqM';
-  private readonly baseUrl = 'https://api.themoviedb.org/3';
+  private readonly apiKey = '5d2572ebb9ed67c316d3a3e5601e5e15'; // Classic API key
+  private readonly readAccessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZDI1NzJlYmI5ZWQ2N2MzMTZkM2EzZTU2MDFlNWUxNSIsIm5iZiI6MTc4MjMxOTEzMS4zNjgsInN1YiI6IjZhM2MwODFiMGNhYzMyZmVmZjY2YjEwYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m7J9FUIDtiVrszVvcWkpZd47qxi5_-kvjc69Kd7SzqM'; // Bearer token for TMDB v4 authentification
+  private readonly baseUrl = 'https://api.themoviedb.org/3'; // Base URL shared by all TMDB v3 endpoints
 
   constructor(private http: HttpClient) {}
 
-  private authHeaders() {
+  private authHeaders() { // Builds the HTTP headers with the Bearer token
     return new HttpHeaders({
       Authorization: `Bearer ${this.readAccessToken}`,
       'Content-Type': 'application/json;charset=utf-8'
     });
   }
 
+  // Fetches the list of currently popular movies from TMDB
+  // Used on the home page to display something before the user searches
   popularMovies(page = 1): Observable<any> {
     const url = `${this.baseUrl}/movie/popular`;
     const params = new HttpParams().set('page', String(page)).set('api_key', this.apiKey);
     return this.http.get(url, { headers: this.authHeaders(), params });
   }
 
+  // Used by MovieDetailComponent to display the complete movie page
   movieDetails(id: number): Observable<any> {
     const url = `${this.baseUrl}/movie/${id}`;
     const params = new HttpParams().set('api_key', this.apiKey);
@@ -42,6 +47,7 @@ export class TmdbService {
     return this.http.get(url, { headers: this.authHeaders(), params });
   }
 
+  // Searches for movies by keyword using TMDB's /search/movie endpoint
   searchMovies(query: string, page = 1, filters: any = {}): Observable<any> {
     const url = `${this.baseUrl}/search/movie`;
     let params = new HttpParams()
