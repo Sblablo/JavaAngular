@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // Composant de filtrage des films
 @Component({
-  selector: 'app-movie-filters',
-  templateUrl: './movie-filters.component.html'
+    selector: 'app-movie-filters',
+    templateUrl: './movie-filters.component.html',
+    standalone: false
 })
 export class MovieFiltersComponent {
   @Input() filters: any = {};

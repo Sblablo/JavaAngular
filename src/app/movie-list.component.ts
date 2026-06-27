@@ -7,8 +7,8 @@ import { TmdbService } from './tmdb.service';
 // this component automatically loads the currently popular movies on init and presents them as a list
 // This avoids showing a blank page when the user arrives without searching
 @Component({
-  selector: 'app-movie-list',
-  template: `
+    selector: 'app-movie-list',
+    template: `
     <app-movie-filters
       [filters]="filters"
       [genres]="genres"
@@ -19,7 +19,8 @@ import { TmdbService } from './tmdb.service';
     ></app-movie-filters>
 
     <app-movie-results [movies]="movies"></app-movie-results>
-  `
+  `,
+    standalone: false
 })
 export class MovieListComponent implements OnInit {
   movies: any[] | null = null;

@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 // Movie search bar
 
 @Component({
-  selector: 'app-search',
-  template: `
+    selector: 'app-search',
+    template: `
     <form (submit)="doSearch($event)" class="search-form">
       <input [(ngModel)]="q" name="q" placeholder="Search for a movie" />
       <button type="submit">Search</button>
     </form>
-  `
+  `,
+    standalone: false
 })
 export class SearchComponent {
   q = '';

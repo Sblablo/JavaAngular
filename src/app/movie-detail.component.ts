@@ -5,8 +5,8 @@ import { TmdbService } from './tmdb.service';
 // Full movie detail page
 
 @Component({
-  selector: 'app-movie-detail',
-  template: `
+    selector: 'app-movie-detail',
+    template: `
     @if (movie) {
       <div class="movie-detail">
         <div class="detail-container">
@@ -56,7 +56,7 @@ import { TmdbService } from './tmdb.service';
       <div>Loading...</div>
     }
     `,
-  styles: [`
+    styles: [`
     .movie-detail {
         background: white;
         border-radius: 8px;
@@ -125,7 +125,8 @@ import { TmdbService } from './tmdb.service';
         color: #666;
         line-height: 1.6;
     }
-  `]
+  `],
+    standalone: false
 })
 export class MovieDetailComponent implements OnInit {
   movie: any | null = null; // Full movie data once the API response is received

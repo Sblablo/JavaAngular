@@ -4,8 +4,8 @@ import { TmdbService } from './tmdb.service';
 
 // Composant de présentation des résultats de recherche
 @Component({
-  selector: 'app-movie-results',
-  template: `
+    selector: 'app-movie-results',
+    template: `
     @if (movies !== null) {
       <div>
         @if (movies.length === 0) {
@@ -48,7 +48,8 @@ import { TmdbService } from './tmdb.service';
     @if (movies === null) {
       <div>Loading...</div>
     }
-    `
+    `,
+    standalone: false
 })
 export class MovieResultsComponent implements OnInit, OnChanges {
   @Input() movies: any[] | null = null;
