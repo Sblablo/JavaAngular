@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "projects": {
-    "tmdb-angular-sample": {
+    "not-netflix": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -11,7 +11,7 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/tmdb-angular-sample"
+              "base": "dist/not-netflix"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -28,13 +28,12 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "tmdb-angular-sample:build"
+            "buildTarget": "not-netflix:build"
           }
         }
       }
     }
   },
-  "defaultProject": "tmdb-angular-sample",
   "cli": {
     "analytics": "5f06d024-8eb3-4ecc-9794-a4b5d5ac2ca7"
   },
